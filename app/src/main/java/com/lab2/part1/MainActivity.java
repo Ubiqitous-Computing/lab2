@@ -1,3 +1,5 @@
+package com.lab2.part1;
+
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -7,7 +9,6 @@ import androidx.activity.ComponentActivity;
 
 import com.lab2.part1.R;
 
-import androidx.activity.ComponentActivity;
 
 public class MainActivity extends ComponentActivity {
 
