@@ -77,40 +77,10 @@ public class MainActivity extends ComponentActivity {
             /* If everything works */
             if (isValid) {
                 Intent intent = new Intent(MainActivity.this, IntentActivity.class);
+                /* Pass it to Intent */
+                intent.putExtra("name", nameText);
                 startActivity(intent);
             }
         });
-    }
-
-    /* Displaying Application Life Cycle on LogCat */
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        System.out.println("onPause()");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        System.out.println("onResume()");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        System.out.println("onStop()");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        System.out.println("onRestart()");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        System.out.println("onDestroy()");
     }
 }
