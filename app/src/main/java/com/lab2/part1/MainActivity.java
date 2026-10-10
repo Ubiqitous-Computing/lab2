@@ -1,14 +1,11 @@
 package com.lab2.part1;
 
+import androidx.activity.ComponentActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import androidx.activity.ComponentActivity;
-
-import com.lab2.part1.R;
-
 
 public class MainActivity extends ComponentActivity {
 
@@ -79,11 +76,8 @@ public class MainActivity extends ComponentActivity {
 
             /* If everything works */
             if (isValid) {
-                Toast.makeText(
-                        MainActivity.this,
-                        "Thank you " + nameText + ", your request is being processed!",
-                        Toast.LENGTH_LONG
-                ).show();
+                Intent intent = new Intent(MainActivity.this, IntentActivity.class);
+                startActivity(intent);
             }
         });
     }
