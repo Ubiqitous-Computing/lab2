@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends ComponentActivity {
+    private int validationCode;
+    private boolean emailOpened = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,24 +80,43 @@ public class MainActivity extends ComponentActivity {
             /* If everything works */
             if (isValid) {
 
-                int validationCode = (int) (Math.random() * 900000) + 100000;
+                validationCode = (int) (Math.random() * 900000) + 100000;
 
-                //Get your email app to handle the intent
-                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:" + emailText));
+                String subject = "Account Validation";
+                String body = "Your validation code is: " + validationCode;
 
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Account Validation");
-                emailIntent.putExtra(
-                        Intent.EXTRA_TEXT, "Your Validation code: " + validationCode
+                Uri emailUri = Uri.parse(
+                        "mailto:" + emailText
+                                + "?subject=" + Uri.encode(subject)
+                                + "&body=" + Uri.encode(body)
                 );
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(emailUri);
+
                 // Check to see if an app can handle the mail
                 if (emailIntent.resolveActivity(getPackageManager()) != null) {
+                    emailOpened = true;
                     startActivity(emailIntent);
                 } else {
                     System.out.println("No email app found");
                 }
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (emailOpened) {
+            emailOpened = false;
+
+            Intent validationIntent =
+                    new Intent(MainActivity.this, IntentActivity.class);
+
+            validationIntent.putExtra("validationCode", validationCode);
+
+            startActivity(validationIntent);
+        }
     }
 }

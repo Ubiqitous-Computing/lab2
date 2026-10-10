@@ -1,4 +1,5 @@
 package com.lab2.part2;
+import android.widget.Toast;
 
 import android.os.Bundle;
 
@@ -7,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class IntentActivity extends AppCompatActivity {
@@ -17,14 +21,34 @@ public class IntentActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_intent);
 
-        String name = getIntent().getStringExtra("name");
+        int validationCode =
+                getIntent().getIntExtra("validationCode", 0);
 
-        TextView thankYouText = findViewById(R.id.thankYouText);
+        EditText codeInput = findViewById(R.id.codeInput);
+        Button verifyButton = findViewById(R.id.verifyButton);
 
-        thankYouText.setText(
-                "Thank you " + name + ", your request is being processed"
-        );
+        verifyButton.setOnClickListener(v -> {
 
+            String enteredCode = codeInput.getText().toString().trim();
+
+            if (enteredCode.isEmpty()) {
+                codeInput.setError("Enter the validation code");
+                return;
+            }
+
+            int userCode = Integer.parseInt(enteredCode);
+
+            if (userCode == validationCode) {
+                codeInput.setError(null);
+                Toast.makeText(
+                        IntentActivity.this,
+                        "Account validated successfully",
+                        Toast.LENGTH_LONG
+                ).show();
+            } else {
+                codeInput.setError("Incorrect validation code");
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
