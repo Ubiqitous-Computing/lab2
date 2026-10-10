@@ -82,17 +82,19 @@ public class MainActivity extends ComponentActivity {
 
                 //Get your email app to handle the intent
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setData(Uri.parse("mailto:" + emailText));
 
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Account Validation");
                 emailIntent.putExtra(
                         Intent.EXTRA_TEXT, "Your Validation code: " + validationCode
                 );
-
-                
-
-
+                // Check to see if an app can handle the mail
+                if (emailIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(emailIntent);
+                } else {
+                    System.out.println("No email app found");
+                }
             }
         });
     }
