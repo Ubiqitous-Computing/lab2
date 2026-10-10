@@ -2,6 +2,7 @@ package com.lab2.part2;
 
 import androidx.activity.ComponentActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -76,10 +77,22 @@ public class MainActivity extends ComponentActivity {
 
             /* If everything works */
             if (isValid) {
-                Intent intent = new Intent(MainActivity.this, IntentActivity.class);
-                /* Pass it to Intent */
-                intent.putExtra("name", nameText);
-                startActivity(intent);
+
+                int validationCode = (int) (Math.random() * 900000) + 100000;
+
+                //Get your email app to handle the intent
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:"));
+
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{emailText});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Account Validation");
+                emailIntent.putExtra(
+                        Intent.EXTRA_TEXT, "Your Validation code: " + validationCode
+                );
+
+                
+
+
             }
         });
     }
